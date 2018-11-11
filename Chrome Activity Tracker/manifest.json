@@ -1,0 +1,15 @@
+{
+    "name": "Activity Tracker v1.0",
+    "version": "1.0",
+    "description": "Tracks time spent on web",
+    "permissions": ["storage", "tabs","debugger"],
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "browser_action": {
+        "default_title": "AcTker",
+        "default_popup": "main.html"
+    },
+    "manifest_version": 2,
+    "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.google.com https://platform.twitter.com; object-src 'self'"
+}
