@@ -11,6 +11,8 @@ var BROWSING_MODE = {
 
 var RUN_INTERVAL = 60;
 
+var CHROME_TABS = ["newtab", "extensions"];
+
 // Classes Start
 
 function DateActivity(date, domainActivityDetailsList){
@@ -22,12 +24,14 @@ function DateActivity(date, domainActivityDetailsList){
     }
 }
 
-function DomainActivityDetails(domainInfo, activeTimeSpent, backgroundTimeSpent, browsingMode, startTime){
-    this.domainInfo = domainInfo,
+function DomainActivityDetails(domainId, activeTimeSpent, backgroundTimeSpent, browsingMode, startTime, titleName){
+    this.domainId = domainId,
     this.activeTimeSpent = activeTimeSpent,
     this.backgroundTimeSpent = backgroundTimeSpent,
     this.browsingMode = browsingMode,
-    this.startTime = startTime 
+    this.startTime = startTime,
+    this.titleName = titleName 
+
 
     hoursSpent = function(){
         return this.activeTimeSpent/360.0;
@@ -160,36 +164,39 @@ function getDate(){
 
 function updateStorageForTab(tab, currentDate){
     var domainName = getDomain(tab.url);
-    var domainObject = retrieveDomainFromStorage(domainName);
-    // Transfer to other
-    var [dateActivityObjectIndex, dateActivityObject] = ReturnDateActivityObject(currentDate);
-    var domainActivityDetailsList = dateActivityObject.domainActivityDetailsList;
-    var activities = JSON.parse(localStorage["act_activityInfo"]);
-    if(domainActivityDetailsList){
-        for(var i = domainActivityDetailsList.length - 1; i > -1; i-- ){
-            var domainActivityObject = domainActivityDetailsList[i];
-            if(domainActivityObject.domainInfo.domainName == domainName ){
-                if(tab.active){
-                    domainActivityObject.activeTimeSpent += RUN_INTERVAL;
-                }else{
-                    domainActivityObject.backgroundTimeSpent += RUN_INTERVAL; 
+    var titleName = tab.title;
+    if(CHROME_TABS.indexOf(domainName) == -1){
+        var domainObject = retrieveDomainFromStorage(domainName);
+        // Transfer to other
+        var [dateActivityObjectIndex, dateActivityObject] = ReturnDateActivityObject(currentDate);
+        var domainActivityDetailsList = dateActivityObject.domainActivityDetailsList;
+        var activities = JSON.parse(localStorage["act_activityInfo"]);
+        if(domainActivityDetailsList){
+            for(var i = domainActivityDetailsList.length - 1; i > -1; i-- ){
+                var domainActivityObject = domainActivityDetailsList[i];
+                if(domainActivityObject.domainId == domainObject.domainId && domainActivityObject.titleName == titleName){
+                    if(tab.active){
+                        domainActivityObject.activeTimeSpent += RUN_INTERVAL;
+                    }else{
+                        domainActivityObject.backgroundTimeSpent += RUN_INTERVAL; 
+                    }
+                    domainActivityDetailsList[i] = domainActivityObject;
+                    activities[dateActivityObjectIndex].domainActivityDetailsList =  domainActivityDetailsList;
+                    localStorage["act_activityInfo"] = JSON.stringify(activities);
+                    return;
                 }
-                domainActivityDetailsList[i] = domainActivityObject;
-                activities[dateActivityObjectIndex].domainActivityDetailsList =  domainActivityDetailsList;
-                localStorage["act_activityInfo"] = JSON.stringify(activities);
-                return;
             }
         }
+        // No DomainObject Found...
+        var browsingMode = tab.incognito ? BROWSING_MODE.private : BROWSING_MODE.normal;
+        var domainActivityObj = new DomainActivityDetails(domainObject.domainId, 0, 0, browsingMode, new Date(), titleName);
+        if(!activities[dateActivityObjectIndex].domainActivityDetailsList){
+            activities[dateActivityObjectIndex].domainActivityDetailsList = [];
+        }
+        activities[dateActivityObjectIndex].domainActivityDetailsList.push(domainActivityObj);
+        localStorage["act_activityInfo"] = JSON.stringify(activities);
+        return;
     }
-    // No DomainObject Found...
-    var browsingMode = tab.incognito ? BROWSING_MODE.private : BROWSING_MODE.normal;
-    var domainActivityObj = new DomainActivityDetails(domainObject, 0, 0, browsingMode, new Date());
-    if(!activities[dateActivityObjectIndex].domainActivityDetailsList){
-        activities[dateActivityObjectIndex].domainActivityDetailsList = [];
-    }
-    activities[dateActivityObjectIndex].domainActivityDetailsList.push(domainActivityObj);
-    localStorage["act_activityInfo"] = JSON.stringify(activities);
-    return;
 }
 
 setInterval(updateStorage, RUN_INTERVAL*1000);
