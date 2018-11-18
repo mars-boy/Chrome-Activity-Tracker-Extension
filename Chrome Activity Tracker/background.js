@@ -15,12 +15,22 @@ var CHROME_TABS = ["newtab", "extensions"];
 
 // Classes Start
 
+function DomainTimeSpent(domainName, timeSpent){
+    this.domainName = domainName,
+    this.timeSpent = timeSpent
+}
+
 function DateActivity(date, domainActivityDetailsList){
     this.date = date,
     this.domainActivityDetailsList = domainActivityDetailsList // DomainActivityDetails
+}
 
-    activeHoursSpent = function(){ // Need to implement
-        return 0;
+function getDomainNameById(domainId){
+    var domainInformation  = JSON.parse(localStorage["act_domainInfo"]);
+    for(var domain in domainInformation){
+        if(domain.domainId == domainId){
+            return domain.domainName;
+        }
     }
 }
 
