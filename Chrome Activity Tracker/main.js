@@ -80,13 +80,33 @@ function drawChart(){
     googleChartFormatData.addRows(data);
     var options = {
         title: 'My chrome activity',
-        'width':400,
+        'width':300,
         'height':300
     };
-    var chart = new google.visualization.PieChart(document.getElementById('testDiv'));
+    var chart = new google.visualization.PieChart(document.getElementById('chartDiv'));
     chart.draw(googleChartFormatData, options);
 }
 
 
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
+
+ImportData = function(){
+    var backUpJson = {
+        "domainCount" : localStorage['act_domainCount'],
+        "domainInfo" : localStorage['act_domainInfo'],
+        "activityInfo" : localStorage['act_activityInfo']
+    };
+    var currentDateTime = new Date().toLocaleString();
+    var fileName = "ChromeActivity till "+currentDateTime +".json";
+    var fileContent = JSON.stringify(backUpJson);
+    let element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(fileContent));
+    element.setAttribute('download', fileName);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+}
+
+document.getElementById('importButton').addEventListener('click', ImportData, false);

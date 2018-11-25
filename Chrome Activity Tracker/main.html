@@ -3,14 +3,20 @@
         <style>
         body {
             width: 400px;
+            height: 500px;
             font-family: helvetica, arial, sans-serif;
             font-size: 13px;
         }
         </style>
         <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-        <script src="main.js"></script>
     </head>
     <body>
-        <div id="testDiv"></div>
+        <div id="parentContent">
+                <div id="chartDiv"></div>
+                <div id="backupDiv">
+                    <button id="importButton">Import</button>
+                </div>
+        </div>
     </body>
+    <script src="main.js"></script>
 </html>
