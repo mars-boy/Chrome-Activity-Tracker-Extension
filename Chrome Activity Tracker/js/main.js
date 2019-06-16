@@ -1,69 +1,25 @@
-var activityList = JSON.parse(localStorage["act_activityInfo"]);
+import { DomainInfo, Enum_STORAGE, DomainTimeSpent} from '../js/models.js';
+import { get_domain_name_by_id, get_utc_date,get_activity_info_by_date  } from '../js/utils.js';
 
-function domainInfo(domainName){
-    this.domainId = parseInt(localStorage["act_domainCount"])+1,
-    this.domainName = domainName,
-    this.category = DOMAIN_CATEGORY.other
-}
-
-function getDomainNameById(domainId){
-    var domainInformation  = JSON.parse(localStorage["act_domainInfo"]);
-    for(var i = domainInformation.length - 1; i > -1; i--){
-        var domain = domainInformation[i];
-        if(domain.domainId == domainId){
-            return domain.domainName;
-        }
-    }
-    return "";
-}
-
-function DomainTimeSpent(domainName, timeSpent){
-    this.domainName = domainName,
-    this.timeSpent = timeSpent
-}
-
-function ReturnDateActivityObject(date){
-    var activityList = JSON.parse(localStorage["act_activityInfo"]);
-    for(var i = activityList.length - 1; i > -1; i-- ){
-        var dateActivity = activityList[i];
-        if(dateActivity.date == date){
-            return [i,dateActivity];
-        }
-    }
-}
-
-function getDate(){
-    var today = new Date();
-    var dd = today.getDate();
-    var mm = today.getMonth()+1;
-    var yyyy = today.getFullYear();
-    if(dd<10){
-        dd='0'+dd;
-    } 
-    if(mm<10){
-        mm='0'+mm;
-    } 
-    var today = dd+'/'+mm+'/'+yyyy;
-    return today;
-}
+var activityList = JSON.parse(localStorage[Enum_STORAGE.ACTIVITY_INFO]);
 
 function activeHoursSpentByDomain(date){
-    var domainActivityDetailsList =  ReturnDateActivityObject(date)[1].domainActivityDetailsList;
+    var domainActivityDetailsList =  get_activity_info_by_date(date).domain_activity_details_list;
     var domainTimeSpentMap = new Map();
     if(domainActivityDetailsList && domainActivityDetailsList.length > 0){
         for(var i = domainActivityDetailsList.length - 1; i > -1; i--){
-            var domainId = domainActivityDetailsList[i].domainId;
+            var domainId = domainActivityDetailsList[i].domain_id;
             if(domainTimeSpentMap.has(domainId)){
                 var valueToStore = domainTimeSpentMap.get(domainId)+
-                                        domainActivityDetailsList[i].activeTimeSpent;
+                                        domainActivityDetailsList[i].active_time_spent;
                 domainTimeSpentMap.set(domainId, valueToStore);
             }else{
-                domainTimeSpentMap.set(domainId, domainActivityDetailsList[i].activeTimeSpent);
+                domainTimeSpentMap.set(domainId, domainActivityDetailsList[i].active_time_spent);
             }
         }
         var returnObject = [];
         for(var [k,v] of  domainTimeSpentMap){
-            var domainName = getDomainNameById(k);
+            var domainName = get_domain_name_by_id(k);
             var domTimeObject = [domainName, v];
             returnObject.push(domTimeObject);
         }
@@ -73,7 +29,7 @@ function activeHoursSpentByDomain(date){
 }
 
 function drawChart(){
-    var data = activeHoursSpentByDomain(getDate());
+    var data = activeHoursSpentByDomain(get_utc_date());
     var googleChartFormatData = new google.visualization.DataTable();
     googleChartFormatData.addColumn('string', 'Domain');
     googleChartFormatData.addColumn('number', 'Time Spent');
@@ -91,11 +47,10 @@ function drawChart(){
 google.charts.load('current', {'packages':['corechart']});
 google.charts.setOnLoadCallback(drawChart);
 
-ImportData = function(){
+function ImportData(){
     var backUpJson = {
-        "domainCount" : localStorage['act_domainCount'],
-        "domainInfo" : localStorage['act_domainInfo'],
-        "activityInfo" : localStorage['act_activityInfo']
+        "domainInfo" : localStorage[Enum_STORAGE.DOMAIN_INFO],
+        "activityInfo" : localStorage[Enum_STORAGE.ACTIVITY_INFO]
     };
     var currentDateTime = new Date().toLocaleString();
     var fileName = "ChromeActivity till "+currentDateTime +".json";
