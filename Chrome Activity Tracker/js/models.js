@@ -41,6 +41,21 @@ class DomainTimeSpent{
     }
 }
 
+class DataFormatForChart{
+    constructor(label, value){
+        this.label = label;
+        this.value = value;
+    }
+
+    GoogleChartFormat(){
+        return [this.label, this.value];
+    }
+
+    D3JsFormat(){
+        return { "label": this.label , "value": this.value }
+    }
+}
+
 // Regions for enums
 
 const Enum_DOMAIN_CATEGORY = {
@@ -59,6 +74,11 @@ const Enum_STORAGE = {
     ACTIVITY_INFO : 'act_activity_info'
 };
 
+const Enum_Chart_Type = {
+    GOOGLE_CHARTS : 0,
+    D3_Charts : 1
+}
+
 const Enum_CHROME_INVALID_TABS = ["newtab", "extensions","settings"];
 
 const CON_RUN_INTERVAL = 30;
@@ -68,11 +88,13 @@ export {
     DateActivity,
     DomainInfo,
     DomainActivityDetails,
+    DataFormatForChart,
 
     Enum_DOMAIN_CATEGORY,
     Enum_BROWSING_MODE,
     Enum_STORAGE,
     Enum_CHROME_INVALID_TABS,
+    Enum_Chart_Type,
 
     CON_RUN_INTERVAL
 }
