@@ -8,54 +8,27 @@
 <!-- d3.js from https://cdnjs.cloudflare.com/ajax/libs/d3/4.6.0/d3.min.js -->
 </head>
 <body>
-<div class="tab">
+<div class="content">
+<div class="tab content-10" >
   <button class="tablinks" id="GraphTabDiv">Main</button>
   <button class="tablinks" id="MapTabDiv">Map</button>
 </div>
 
-<div id="Main" class="tabcontent">
+<div id="Main" class="tabcontent content-80">
   <div id="parentContent">
         <div id="chartDiv"></div>
-        <div id="backupDiv">
-            <button id="importButton">Import</button>
-        </div>
   </div>
 </div>
 
-<div id="Map" class="tabcontent" style="display: none;">
+<div id="Map" class="tabcontent content-80" style="display: none;">
   <h3>Map</h3>
   <p>Paris is the capital of France.</p> 
 </div>
 
+<div class="btn-content-10" id="importButton">
+    Import
+</div>
+</div>
 </body>
 <script type="module" src="js/main.js"></script>
 </html> 
-
-
-
-
-<!-- <html>
-    <head>
-        <style>
-        body {
-            width: 400px;
-            height: 500px;
-            font-family: helvetica, arial, sans-serif;
-            font-size: 13px;
-        }
-        </style>
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    </head>
-    <body>
-        <div id="mainContentTab">
-            <div></div>
-        </div>
-        <div id="parentContent">
-                <div id="chartDiv"></div>
-                <div id="backupDiv">
-                    <button id="importButton">Import</button>
-                </div>
-        </div>
-    </body>
-    <script type="module" src="js/main.js"></script>
-</html> -->

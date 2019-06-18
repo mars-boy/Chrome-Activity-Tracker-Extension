@@ -39,25 +39,6 @@ function activeHoursSpentByDomain(date,chartType){
     return [domTimeObject];
 }
 
-// function drawChart(){
-//     var data = activeHoursSpentByDomain(get_utc_date());
-//     var googleChartFormatData = new google.visualization.DataTable();
-//     googleChartFormatData.addColumn('string', 'Domain');
-//     googleChartFormatData.addColumn('number', 'Time Spent');
-//     googleChartFormatData.addRows(data);
-//     var options = {
-//         title: 'My chrome activity',
-//         'width':300,
-//         'height':300
-//     };
-//     var chart = new google.visualization.PieChart(document.getElementById('chartDiv'));
-//     chart.draw(googleChartFormatData, options);
-// }
-
-
-// google.charts.load('current', {'packages':['corechart']});
-// google.charts.setOnLoadCallback(drawChart);
-
 function drawChart(chartType){
     if(chartType == Enum_Chart_Type.D3_Charts)
     {
