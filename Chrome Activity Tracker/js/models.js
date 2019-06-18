@@ -28,7 +28,9 @@ class DateActivity{
 
 class DomainInfo{
     constructor(domain_name){
-        this.domain_id = domain_count++;
+        var current_count = JSON.parse(localStorage[Enum_STORAGE.DOMAIN_COUNT_INFO]);
+        localStorage[Enum_STORAGE.DOMAIN_COUNT_INFO] = JSON.stringify(current_count+1);
+        this.domain_id = current_count+1;
         this.domain_name = domain_name;
         this.category = Enum_DOMAIN_CATEGORY.OTHER;
     }
@@ -71,7 +73,8 @@ const Enum_BROWSING_MODE = {
 
 const Enum_STORAGE = {
     DOMAIN_INFO : 'act_domain_info',
-    ACTIVITY_INFO : 'act_activity_info'
+    ACTIVITY_INFO : 'act_activity_info',
+    DOMAIN_COUNT_INFO : 'act_domain_count_info'
 };
 
 const Enum_Chart_Type = {
@@ -81,7 +84,7 @@ const Enum_Chart_Type = {
 
 const Enum_CHROME_INVALID_TABS = ["newtab", "extensions","settings"];
 
-const CON_RUN_INTERVAL = 30;
+const CON_RUN_INTERVAL = 60;
 
 export {
     DomainTimeSpent,

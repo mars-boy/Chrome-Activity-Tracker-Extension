@@ -22,11 +22,10 @@ function activeHoursSpentByDomain(date,chartType){
             var domainName = get_domain_name_by_id(k);
             var domTimeObject;
             if(chartType == Enum_Chart_Type.GOOGLE_CHARTS){
-                domTimeObject = new DataFormatForChart(domainName, v).GoogleChartFormat();
+                domTimeObject = new DataFormatForChart(domainName, v/60).GoogleChartFormat();
             }else if(chartType == Enum_Chart_Type.D3_Charts){
-                domTimeObject = new DataFormatForChart(domainName, v).D3JsFormat();
+                domTimeObject = new DataFormatForChart(domainName, v/60).D3JsFormat();
             }
-            
             returnObject.push(domTimeObject);
         }
         return returnObject; 

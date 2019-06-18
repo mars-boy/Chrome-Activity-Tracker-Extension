@@ -14,6 +14,11 @@ import {
 
 
 function createStorageSpaces(){
+
+    if(!localStorage[Enum_STORAGE.DOMAIN_COUNT_INFO]){
+        localStorage[Enum_STORAGE.DOMAIN_COUNT_INFO] = JSON.stringify(0);
+    }
+
     if(!localStorage[Enum_STORAGE.DOMAIN_INFO]){
         localStorage[Enum_STORAGE.DOMAIN_INFO] = JSON.stringify(new Array());
     }
