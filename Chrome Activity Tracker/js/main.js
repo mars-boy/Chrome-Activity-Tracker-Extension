@@ -1,8 +1,6 @@
 import { DomainInfo, Enum_STORAGE, DomainTimeSpent,DataFormatForChart,Enum_Chart_Type} from '../js/models.js';
 import { get_domain_name_by_id, get_utc_date,get_activity_info_by_date  } from '../js/utils.js';
 
-var activityList = JSON.parse(localStorage[Enum_STORAGE.ACTIVITY_INFO]);
-
 function activeHoursSpentByDomain(date,chartType){
     var domainActivityDetailsList =  get_activity_info_by_date(date).domain_activity_details_list;
     var domainTimeSpentMap = new Map();
@@ -122,8 +120,9 @@ function load_for_d3_chart(){
 
 drawChart(Enum_Chart_Type.D3_Charts);
 
-function ImportData(){
+function ExportData(){
     var backUpJson = {
+        "countInfo" : localStorage[Enum_STORAGE.DOMAIN_COUNT_INFO],
         "domainInfo" : localStorage[Enum_STORAGE.DOMAIN_INFO],
         "activityInfo" : localStorage[Enum_STORAGE.ACTIVITY_INFO]
     };
@@ -171,4 +170,4 @@ function ImportData(){
 
 
 
-document.getElementById('importButton').addEventListener('click', ImportData, false);
+document.getElementById('exportButton').addEventListener('click', ExportData, false);

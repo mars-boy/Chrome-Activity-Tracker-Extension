@@ -68,5 +68,17 @@ div.tooltip-donut {
   background-color: lightslategrey;
   font-size: 1rem;
   font-weight: bold;
+  cursor: pointer;
   text-align: center;
+  overflow: hidden;
+}
+
+.btn-content-10 button{
+  background-color: inherit;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  font-size: 17px;
 }
